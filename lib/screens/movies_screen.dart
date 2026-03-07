@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mvvm_statemanagements/enums/theme_enums.dart';
 import 'package:mvvm_statemanagements/view_models/movies/movies_provider.dart';
 import 'package:mvvm_statemanagements/view_models/theme_provider.dart';
+import 'package:mvvm_statemanagements/widgets/my_error_widget.dart';
 
 import '../constants/my_app_icons.dart';
 import '../service/init_getit.dart';
@@ -46,11 +47,23 @@ class MoviesScreen extends ConsumerWidget {
       body: Consumer(builder: (context, WidgetRef ref, child) {
         final moviesState = ref.watch(moviesProvider);
 
+        if (moviesState.isLoading && moviesState.moviesList.isEmpty) {
+          return const Center(child: CircularProgressIndicator.adaptive());
+        }
+        if (moviesState.fetchMoviesError.isNotEmpty) {
+          return MyErrorWidget(
+            errorText: moviesState.fetchMoviesError,
+            retryFunction: () =>
+                ref.read(moviesProvider.notifier).fetchMovies(),
+          );
+        }
+        if (moviesState.moviesList.isEmpty) {
+          return const Center(child: Text("No movies"));
+        }
+
         return ListView.builder(
           itemCount: moviesState.moviesList.length,
-          itemBuilder: (context, index) {
-            return MoviesWidget(index: index);
-          },
+          itemBuilder: (context, index) => MoviesWidget(index: index),
         );
       }),
     );

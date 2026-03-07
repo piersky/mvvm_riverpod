@@ -1,9 +1,15 @@
 import 'dart:convert';
 
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:mvvm_statemanagements/models/movies_model.dart';
 import 'package:mvvm_statemanagements/view_models/favorites/favorites_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:state_notifier/state_notifier.dart';
+
+final favoritesProvider =
+    StateNotifierProvider<FavoritesProvider, FavoritesState>(
+  (ref) => FavoritesProvider(),
+);
 
 class FavoritesProvider extends StateNotifier<FavoritesState> {
   FavoritesProvider() : super(FavoritesState());
@@ -21,6 +27,15 @@ class FavoritesProvider extends StateNotifier<FavoritesState> {
       state = state.copyWith(
           favoritesList: state.favoritesList.where((i) => i != item).toList());
     }
+  }
+
+  Future<void> addOrRemoveFromFavorites(MovieModel movieModel) async {
+    bool wasFavorite = isFavorite(movieModel);
+    List<MovieModel> updatedFavorites = wasFavorite
+        ? state.favoritesList.where((i) => i.id != movieModel.id).toList()
+        : [...state.favoritesList, movieModel];
+    state = state.copyWith(favoritesList: updatedFavorites);
+    await saveFavorites();
   }
 
   bool isFavorite(MovieModel item) {

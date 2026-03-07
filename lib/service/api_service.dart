@@ -12,12 +12,16 @@ class ApiService {
     final response = await http
         .get(url, headers: ApiConstants.headers)
         .timeout(const Duration(seconds: 10));
+    print("GET $url -> ${response.statusCode}");
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       // log("data $data");
       return List.from(
           data['results'].map((element) => MovieModel.fromJson(element)));
     } else {
+      final body = response.body;
+      final preview = body.length > 500 ? body.substring(0, 500) : body;
+      print("Movies API error body (preview): $preview");
       throw Exception("Failed to load movies: ${response.statusCode}");
     }
   }

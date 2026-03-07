@@ -46,6 +46,7 @@ class MoviesProvider extends StateNotifier<MoviesState> {
         isLoading: false,
         fetchMoviesError: e.toString(),
       );
+      rethrow;
     }
   }
 }

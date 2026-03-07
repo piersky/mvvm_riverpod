@@ -105,11 +105,11 @@ class MovieDetailsScreen extends ConsumerWidget {
                             color: Theme.of(context).cardColor,
                             shape: BoxShape.circle,
                           ),
-                          child: const Padding(
+                          child: Padding(
                               padding: EdgeInsets.all(6.0),
                               child: FavoriteBtnWidget(
-                                  // movieModel: movieModel,
-                                  )),
+                                movieModel: movieModel,
+                              )),
                         ),
                       ),
                     ],

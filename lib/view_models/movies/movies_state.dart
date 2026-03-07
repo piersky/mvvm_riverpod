@@ -9,7 +9,7 @@ class MoviesState {
   final String fetchMoviesError;
 
   MoviesState({
-    this.currentPage = 1,
+    this.currentPage = 0,
     this.moviesList = const [],
     this.moviesGenresList = const [],
     this.isLoading = false,
