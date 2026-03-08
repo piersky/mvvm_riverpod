@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mvvm_statemanagements/enums/theme_enums.dart';
+import 'package:mvvm_statemanagements/logs/riverpod_observer.dart';
 import 'package:mvvm_statemanagements/screens/splash_screen.dart';
 import 'package:mvvm_statemanagements/stream_providers/weather_screen.dart';
 import 'package:mvvm_statemanagements/view_models/theme_provider.dart';
@@ -21,7 +22,12 @@ void main() {
     // DeviceOrientation.landscapeRight,
   ]).then((_) async {
     await dotenv.load(fileName: "assets/.env");
-    runApp(const ProviderScope(child: MyApp()));
+    runApp(
+      ProviderScope(
+        observers: [RiverpodObserver()],
+        child: const MyApp(),
+      ),
+    );
   });
 }
 
@@ -40,7 +46,7 @@ class MyApp extends ConsumerWidget {
       theme: themeState == ThemeEnums.dark
           ? MyThemeData.darkTheme
           : MyThemeData.lightTheme,
-      home: const WeatherScreen(),
+      home: const SplashScreen(),
       // const SplashScreen(), //const MovieDetailsScreen(), //const FavoritesScreen(), //const MoviesScreen(),
     );
   }
