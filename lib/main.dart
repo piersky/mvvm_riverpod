@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mvvm_statemanagements/enums/theme_enums.dart';
 import 'package:mvvm_statemanagements/screens/splash_screen.dart';
+import 'package:mvvm_statemanagements/stream_providers/weather_screen.dart';
 import 'package:mvvm_statemanagements/view_models/theme_provider.dart';
 
 import 'constants/my_theme_data.dart';
@@ -39,7 +40,7 @@ class MyApp extends ConsumerWidget {
       theme: themeState == ThemeEnums.dark
           ? MyThemeData.darkTheme
           : MyThemeData.lightTheme,
-      home: const SplashScreen(),
+      home: const WeatherScreen(),
       // const SplashScreen(), //const MovieDetailsScreen(), //const FavoritesScreen(), //const MoviesScreen(),
     );
   }

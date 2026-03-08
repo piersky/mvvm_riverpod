@@ -20,6 +20,8 @@ class FavoritesProvider extends StateNotifier<FavoritesState> {
     if (!isFavorite(item)) {
       state = state.copyWith(favoritesList: [...state.favoritesList, item]);
     }
+
+    saveFavorites();
   }
 
   void removeFavorite(MovieModel item) {
@@ -27,6 +29,7 @@ class FavoritesProvider extends StateNotifier<FavoritesState> {
       state = state.copyWith(
           favoritesList: state.favoritesList.where((i) => i != item).toList());
     }
+    saveFavorites();
   }
 
   Future<void> addOrRemoveFromFavorites(MovieModel movieModel) async {
@@ -43,8 +46,8 @@ class FavoritesProvider extends StateNotifier<FavoritesState> {
   }
 
   void clearAllFavs() {
-    state.favoritesList.clear();
-    state = state.copyWith(favoritesList: state.favoritesList);
+    state = state.copyWith(favoritesList: []);
+    saveFavorites();
   }
 
   Future<void> saveFavorites() async {
@@ -58,10 +61,9 @@ class FavoritesProvider extends StateNotifier<FavoritesState> {
   Future<void> loadFavorites() async {
     final prefs = await SharedPreferences.getInstance();
     final favsJsonList = prefs.getStringList(favskey) ?? [];
-    state.favoritesList.clear();
-    state.favoritesList.addAll(favsJsonList
-        .map((movieJson) => MovieModel.fromJson(json.decode(movieJson)))
-        .toList());
-    state = state.copyWith(favoritesList: state.favoritesList);
+    state = state.copyWith(favoritesList: []);
+    final movies = favsJsonList
+        .map((movieJson) => MovieModel.fromJson(json.decode(movieJson)));
+    state = state.copyWith(favoritesList: movies.toList());
   }
 }

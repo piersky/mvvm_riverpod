@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mvvm_statemanagements/view_models/movies/movies_provider.dart';
+import 'package:mvvm_statemanagements/models/movies_model.dart';
 import 'package:mvvm_statemanagements/widgets/movies/favorite_btn.dart';
 
 import '../widgets/cached_image.dart';
@@ -9,14 +9,17 @@ import '../widgets/movies/genres_list_widget.dart';
 class MovieDetailsScreen extends ConsumerWidget {
   const MovieDetailsScreen({
     super.key,
-    required this.index,
+    // required this.index,
+    required this.movieModel,
   });
 
-  final int index;
+  // final int index;
+  final MovieModel movieModel;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.sizeOf(context);
-    final movieModel = ref.watch(currentMovie(index));
+    // final movieModel = ref.watch(currentMovie(index));
 
     return Scaffold(
       body: SafeArea(
@@ -27,7 +30,7 @@ class MovieDetailsScreen extends ConsumerWidget {
               width: double.infinity,
               child: CachedImageWidget(
                 imgUrl:
-                    "https://image.tmdb.org/t/p/w500/${movieModel!.backdropPath}",
+                    "https://image.tmdb.org/t/p/w500/${movieModel.backdropPath}",
               ),
             ),
             SingleChildScrollView(

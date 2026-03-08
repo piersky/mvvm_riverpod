@@ -63,7 +63,8 @@ class MoviesScreen extends ConsumerWidget {
 
         return ListView.builder(
           itemCount: moviesState.moviesList.length,
-          itemBuilder: (context, index) => MoviesWidget(index: index),
+          itemBuilder: (context, index) =>
+              MoviesWidget(movieModel: moviesState.moviesList[index]),
         );
       }),
     );

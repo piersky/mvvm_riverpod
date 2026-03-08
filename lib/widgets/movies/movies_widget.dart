@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mvvm_statemanagements/constants/my_app_constants.dart';
 import 'package:mvvm_statemanagements/constants/my_app_icons.dart';
+import 'package:mvvm_statemanagements/models/movies_model.dart';
 import 'package:mvvm_statemanagements/screens/movie_details.dart';
 import 'package:mvvm_statemanagements/view_models/movies/movies_provider.dart';
 import '../../service/init_getit.dart';
@@ -13,15 +13,15 @@ import 'genres_list_widget.dart';
 class MoviesWidget extends ConsumerWidget {
   const MoviesWidget({
     super.key,
-    required this.index,
+    required this.movieModel,
   });
 
-  final int index;
+  final MovieModel movieModel;
 
   // final MovieModel movieModel;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final movieModel = ref.watch(currentMovie(index));
+    // final movieModel = ref.watch(currentMovie(index));
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -31,7 +31,8 @@ class MoviesWidget extends ConsumerWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(12.0),
           onTap: () {
-            getIt<NavigationService>().navigate(MovieDetailsScreen(index: index));
+            getIt<NavigationService>()
+                .navigate(MovieDetailsScreen(movieModel: movieModel));
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -90,8 +91,8 @@ class MoviesWidget extends ConsumerWidget {
                             ),
                             const Spacer(),
                             FavoriteBtnWidget(
-                                movieModel: movieModel,
-                                )
+                              movieModel: movieModel,
+                            )
                           ],
                         ),
                       ],
